@@ -1,0 +1,17 @@
+{
+  "name": "hohenlohebot",
+  "version": "2.0.0",
+  "description": "Rework of hohenloheBot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "mongoose": "^6.2.9",
+    "node-cron": "^3.0.0",
+    "twit": "^2.2.11"
+  }
+}
