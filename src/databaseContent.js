@@ -27,7 +27,7 @@ module.exports = { getContentFromDatabase, markAsPosted };
 
 
 
-// // helper function to new vokabel or spruch to database (import data before use)
+// // helper function to save new vokabel or spruch to database (import data before use)
 // data.data.forEach(el => {
 //   const textchen = new Text({ text: el.text, category: el.category, already_posted: false })
 //   textchen.save().then(response => console.log(response))
