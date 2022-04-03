@@ -9,7 +9,7 @@ const getMuswiesenContent = () => {
   // Calculating the time difference between two dates
   const diffInTime = muswiese.getTime() - today.getTime();
 
-  // Calculating the no. of days between two dates
+  // Calculating the number of days between two dates
   const diffInDays = Math.round(diffInTime / oneDay);
 
   return `Ezz sanns bloaß noch ${diffInDays} Dooch bis zur Muswies!`;
