@@ -13,5 +13,9 @@
     "mongoose": "^6.2.9",
     "node-cron": "^3.0.0",
     "twit": "^2.2.11"
+  },
+  "devDependencies": {
+    "mocha": "^9.2.2",
+    "must": "^0.13.4"
   }
 }

@@ -101,3 +101,6 @@ cron.schedule("0 12 16 * * 3,5,7", function() {
 cron.schedule("0 30 14 * * 1,4", function() {
   sendTweet('Spruch');
 });
+
+//exports for testing
+module.exports = { checkForBlockedWords, blockedWords };
