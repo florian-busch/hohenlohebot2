@@ -1,5 +1,4 @@
-[HohenloheBot2.0](https://twitter.com/HohenloheB)
-
+HohenloheBot 2.0
 Twitter bot that interacts with tweets about Hohenlohe, a region in southern Germany.
 
 Functionality:
@@ -7,6 +6,8 @@ Functionality:
   2. Posts tweets with words from the regional dialect Hohenlohisch and proverbs or just funny things people say
 
 Runs on twit (https://www.npmjs.com/package/twit) with a mongodb database.
+[
+HohenloheBot on Twitter.](https://twitter.com/HohenloheB)
 
 This is the rework with better folder and file organization.
 
