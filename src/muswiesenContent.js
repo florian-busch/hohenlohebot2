@@ -11,7 +11,6 @@ const getMuswiesenContent = () => {
 
   // Calculating the number of days between two dates
   const diffInDays = Math.round(diffInTime / oneDay);
-
   return {text: `Ezz sanns bloaß noch ${diffInDays} Dooch bis zur Muswies!`};
 };
 

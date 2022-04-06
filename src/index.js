@@ -9,6 +9,7 @@ const { getDatabaseContent, markAsPosted } = require('./getDatabaseContent.js');
 //logger functions
 const  { loggRetweets } = require('./loggRetweets');
 const { loggOwnTweets } = require('./loggOwnTweets.js');
+const { loggErrors } = require('./loggErrors.js');
 
 //setup Twit
 const T = new Twit({
@@ -22,7 +23,7 @@ const T = new Twit({
 let blocks = [];
 const getBlockedUsers = () => {
   T.get('blocks/ids', function (err, data, response) {
-    if(err) {
+    if (err) {
       console.log(err)
     } else {
       return blocks = data.ids}
@@ -45,20 +46,19 @@ stream.on('tweet', gotTweet);
 //retweet tweets from users that on bots block list and whose tweets that don't contain blocked words
 function gotTweet(tweet) {
   if(!blocks.includes(tweet.user.id) && !checkForBlockedWords(tweet.text)) {
-    console.log('Attempting to retweet ' + tweet.id_str + ": " + tweet.text);
-
     T.post('statuses/retweet', { id: tweet.id_str }, retweeted);
 
     function retweeted(err, data, response) {
       if (err) {
         console.log("Error: " + err.message);
       } else {
-        //Succesful retweet, logg retweeted Tweets to db
+        //Succesful retweet, logg retweet to db
         loggRetweets(data)
       };
     };
     //if user is blocked
   } else {
+    //user is either blocked or tweet contains blocked word
     console.log('User ' + tweet.user.id_str + ' is blocked');
   }
 };
@@ -77,15 +77,17 @@ const sendTweet = async category => {
 
   //Send content in tweet, mark content as posted in database afterwards and logg content to db
   T.post('statuses/update', { status: content.text }, (err, data, response) => {
-    if (err) {
-      console.log(err);
-    } else {
-      //mark tweet as posted in db and logg tweet to db
-      markAsPosted(content);
-      loggOwnTweets(data, category);
-    }
-  });
+      if (err) {
+        loggErrors(err, 'TweetPost')
+      } else {
+        //mark tweet as posted in db and logg tweet to db
+        markAsPosted(content);
+        loggOwnTweets(data, category);
+      }
+    })
 };
+
+sendTweet('Spruch')
 
 /*//Cron-jobs to start different
  tweets and get blocked users//*/
