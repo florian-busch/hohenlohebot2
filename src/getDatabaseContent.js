@@ -28,7 +28,8 @@ module.exports = { getDatabaseContent, markAsPosted };
 
 
 // // helper function to save new vokabel or spruch to database (import data before use)
-// data.data.forEach(el => {
+// const { data } = require('../data/data')
+// data.forEach(el => {
 //   const textchen = new Text({ text: el.text, category: el.category, already_posted: false })
 //   textchen.save().then(response => console.log(response))
 // });
