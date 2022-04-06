@@ -7,6 +7,7 @@ const loggOwnTweetsSchema = new Schema({
     tweet: {
         created_at: Date,
         id: Number,
+        id_str: String,
         text: String,
         retweet_count: Number,
         favorite_count: Number,

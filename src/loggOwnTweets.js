@@ -14,6 +14,7 @@ const loggOwnTweets = (data, category) => {
         tweet: {
             created_at: data.created_at,
             id: data.id,
+            id_str: data.id_str,
             text: data.text,
             retweet_count: data.retweet_count,
             favorite_count: data.favorite_count,

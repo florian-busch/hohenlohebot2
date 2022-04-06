@@ -13,6 +13,7 @@ const loggRetweets = data => {
         retweeted_status: {
             created_at: data.retweeted_status.created_at,
             id: data.retweeted_status.id,
+            id_str: data.retweeted_status.id_str,
             text: data.retweeted_status.text,
             user: {
                 id: data.retweeted_status.user.id,

@@ -6,6 +6,7 @@ const loggRetweetsSchema = new Schema({
   retweeted_status: {
     created_at: Date,
     id: Number,
+    id_str: String,
     text: String,
     user: {
       id: Number,

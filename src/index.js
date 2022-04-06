@@ -87,8 +87,6 @@ const sendTweet = async category => {
     })
 };
 
-sendTweet('Spruch')
-
 /*//Cron-jobs to start different
  tweets and get blocked users//*/
 
