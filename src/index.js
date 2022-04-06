@@ -4,7 +4,7 @@ const cron = require('node-cron');
 
 //external functions for tweet content
 const { getMuswiesenContent } = require('./muswiesenContent.js');
-const { getDatabaseContent, markAsPosted } = require('./databaseContent.js');
+const { getDatabaseContent, markAsPosted } = require('./getDatabaseContent.js');
 
 //logger functions
 const  { loggRetweets } = require('./loggRetweets');
@@ -75,7 +75,7 @@ const sendTweet = async category => {
     console.log('Error: No valid content category');
   };
 
-  //Send content in tweet and mark content as posted in database afterwards
+  //Send content in tweet, mark content as posted in database afterwards and logg content to db
   T.post('statuses/update', { status: content.text }, (err, data, response) => {
     if (err) {
       console.log(err);
@@ -87,7 +87,9 @@ const sendTweet = async category => {
   });
 };
 
-//cron-jobs to start different tweets and get blocked users
+/*//Cron-jobs to start different
+ tweets and get blocked users//*/
+
 //get blocked users once at start and then once a day
 getBlockedUsers();
 cron.schedule("0 59 23 * * *", function() {
