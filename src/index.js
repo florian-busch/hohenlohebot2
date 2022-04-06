@@ -3,11 +3,12 @@ const Twit = require('twit');
 const cron = require('node-cron');
 
 //external functions for tweet content
-const getMuswiesenContent = require('./muswiesenContent.js');
-const getDatabaseContent = require('./databaseContent.js');
+const { getMuswiesenContent } = require('./muswiesenContent.js');
+const { getDatabaseContent, markAsPosted } = require('./databaseContent.js');
 
 //logger functions
-const loggRetweets = require('./loggRetweets')
+const  { loggRetweets } = require('./loggRetweets');
+const { loggOwnTweets } = require('./loggOwnTweets.js');
 
 //setup Twit
 const T = new Twit({
@@ -53,7 +54,7 @@ function gotTweet(tweet) {
         console.log("Error: " + err.message);
       } else {
         //Succesful retweet, logg retweeted Tweets to db
-        loggRetweets.loggRetweets(data)
+        loggRetweets(data)
       };
     };
     //if user is blocked
@@ -67,20 +68,21 @@ console.log('Bot listening');
 const sendTweet = async category => {
   let content = '';
   if (category == 'Muswiese') {
-    content = await getMuswiesenContent.getMuswiesenContent();
+    content = await getMuswiesenContent();
   } else if (category == 'Vokabel' || category == 'Spruch') {
-    content = await getDatabaseContent.getContentFromDatabase(category);
+    content = await getDatabaseContent(category);
   } else {
     console.log('Error: No valid content category');
-  }
+  };
 
   //Send content in tweet and mark content as posted in database afterwards
   T.post('statuses/update', { status: content.text }, (err, data, response) => {
     if (err) {
       console.log(err);
     } else {
-      getDatabaseContent.markAsPosted(content);
-      console.log(data);
+      //mark tweet as posted in db and logg tweet to db
+      markAsPosted(content);
+      loggOwnTweets(data, category);
     }
   });
 };
@@ -92,20 +94,20 @@ cron.schedule("0 59 23 * * *", function() {
   getBlockedUsers()
 });
 
-// //Muswiesentweet every tuesday at 15.33
-// cron.schedule("0 33 15 * * 2", function() {
-//   sendTweet('Muswiese');
-// });
+//Muswiesentweet every tuesday at 15.33
+cron.schedule("0 33 15 * * 2", function() {
+  sendTweet('Muswiese');
+});
 
-// //Vokabel-Tweet every wednesday, friday and sunday at 4.12 pm
-// cron.schedule("0 12 16 * * 3,5,7", function() {
-//   sendTweet('Vokabel');
-// });
+//Vokabel-Tweet every wednesday, friday and sunday at 4.12 pm
+cron.schedule("0 12 16 * * 3,5,7", function() {
+  sendTweet('Vokabel');
+});
 
-// //Spruch-Tweet every monday and thursday at 2.30 pm
-// cron.schedule("0 30 14 * * 1,4", function() {
-//   sendTweet('Spruch');
-// });
+//Spruch-Tweet every monday and thursday at 2.30 pm
+cron.schedule("0 30 14 * * 1,4", function() {
+  sendTweet('Spruch');
+});
 
 //exports for testing
 module.exports = { checkForBlockedWords };

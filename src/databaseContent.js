@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
 //get Schema from schema file
-const textSchema = require('../schemas/textSchema');
+const { textSchema } = require('../schemas/textSchema');
 
 //Model setup
-const Text = mongoose.model('Text', textSchema.textSchema);
+const Text = mongoose.model('Text', textSchema);
 
 //mark texts as already posted after they got tweeted
 async function markAsPosted (doc) {
@@ -14,7 +14,7 @@ async function markAsPosted (doc) {
 };
 
 //get content for tweets from database based on category of tweet (vokabel or spruch)
-const getContentFromDatabase = async category => {
+const getDatabaseContent = async category => {
   const doc = await Text.findOne({ category: `${category}`, already_posted: false });
     if (category == undefined) {
       return 'No document found';
@@ -23,7 +23,7 @@ const getContentFromDatabase = async category => {
     }
 };
 
-module.exports = { getContentFromDatabase, markAsPosted };
+module.exports = { getDatabaseContent, markAsPosted };
 
 
 
