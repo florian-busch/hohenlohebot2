@@ -1,4 +1,4 @@
-HohenloheBot2.0
+[HohenloheBot2.0](https://twitter.com/HohenloheB)
 
 Twitter bot that interacts with tweets about Hohenlohe, a region in southern Germany.
 
