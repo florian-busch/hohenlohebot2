@@ -30,7 +30,7 @@ const getBlockedUsers = () => {
 };
 
 //key words bot listens for
-const phrase = "Hoohenlohe,hohenlohe,#hohenlohe,#Hohenlohe,Hohenlohisch,hohenlohisch,Hohenloher,hohenloher,@hohenloheb";
+const phrase = "Hohenlohe,hohenlohe,#hohenlohe,#Hohenlohe,Hohenlohisch,hohenlohisch,Hohenloher,hohenloher,@hohenloheb";
 
 //check tweet for words that should not be retweeted (returns true if one or more words are in tweet)
 const blockedWords = ['alfonso', 'hubertus', 'karl'];

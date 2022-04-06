@@ -6,7 +6,7 @@ mongoose.connect(process.env.MONGOCONNECTION);
 const loggRetweetsSchema = require('../schemas/loggRetweetsSchema');
 
 //create mongoose model
-const retweetModel = mongoose.model('loggTweetsSchema', loggRetweetsSchema.loggRetweetsSchema);
+const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema.loggRetweetsSchema);
 
 const loggRetweets = data => {
     const newRetweet = new retweetModel({
