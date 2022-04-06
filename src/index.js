@@ -6,6 +6,9 @@ const cron = require('node-cron');
 const getMuswiesenContent = require('./muswiesenContent.js');
 const getDatabaseContent = require('./databaseContent.js');
 
+//logger functions
+const loggRetweets = require('./loggRetweets')
+
 //setup Twit
 const T = new Twit({
   consumer_key: process.env.TWITTER_API_KEY,
@@ -27,7 +30,7 @@ const getBlockedUsers = () => {
 };
 
 //key words bot listens for
-const phrase = "Hohenlohe,hohenlohe,#hohenlohe,#Hohenlohe,Hohenlohisch,hohenlohisch,Hohenloher,hohenloher,@hohenloheb";
+const phrase = "Hoohenlohe,hohenlohe,#hohenlohe,#Hohenlohe,Hohenlohisch,hohenlohisch,Hohenloher,hohenloher,@hohenloheb";
 
 //check tweet for words that should not be retweeted (returns true if one or more words are in tweet)
 const blockedWords = ['alfonso', 'hubertus', 'karl'];
@@ -49,9 +52,11 @@ function gotTweet(tweet) {
       if (err) {
         console.log("Error: " + err.message);
       } else {
-        console.log('Retweeted: ' + tweet.id);
-      }
-    }
+        //Succesful retweet, logg retweeted Tweets to db
+        loggRetweets.loggRetweets(data)
+      };
+    };
+    //if user is blocked
   } else {
     console.log('User ' + tweet.user.id_str + ' is blocked');
   }
@@ -87,20 +92,20 @@ cron.schedule("0 59 23 * * *", function() {
   getBlockedUsers()
 });
 
-//Muswiesentweet every tuesday at 15.33
-cron.schedule("0 33 15 * * 2", function() {
-  sendTweet('Muswiese');
-});
+// //Muswiesentweet every tuesday at 15.33
+// cron.schedule("0 33 15 * * 2", function() {
+//   sendTweet('Muswiese');
+// });
 
-//Vokabel-Tweet every wednesday, friday and sunday at 4.12 pm
-cron.schedule("0 12 16 * * 3,5,7", function() {
-  sendTweet('Vokabel');
-});
+// //Vokabel-Tweet every wednesday, friday and sunday at 4.12 pm
+// cron.schedule("0 12 16 * * 3,5,7", function() {
+//   sendTweet('Vokabel');
+// });
 
-//Spruch-Tweet every monday and thursday at 2.30 pm
-cron.schedule("0 30 14 * * 1,4", function() {
-  sendTweet('Spruch');
-});
+// //Spruch-Tweet every monday and thursday at 2.30 pm
+// cron.schedule("0 30 14 * * 1,4", function() {
+//   sendTweet('Spruch');
+// });
 
 //exports for testing
-module.exports = { checkForBlockedWords, blockedWords };
+module.exports = { checkForBlockedWords };
