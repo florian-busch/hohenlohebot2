@@ -6,8 +6,8 @@ Functionality:
   2. Posts tweets with words from the regional dialect Hohenlohisch and proverbs or just funny things people say
 
 Runs on twit (https://www.npmjs.com/package/twit) with a mongodb database.
-[
-HohenloheBot on Twitter.](https://twitter.com/HohenloheB)
+
+[HohenloheBot on Twitter.](https://twitter.com/HohenloheB)
 
 This is the rework with better folder and file organization.
 
