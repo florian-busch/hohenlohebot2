@@ -16,6 +16,7 @@ const loggOwnTweetsSchema = new Schema({
         truncated: Boolean,
         user: {
         id: Number,
+        id_str: String,
         name: String,
         screen_name: String,
         location: String,

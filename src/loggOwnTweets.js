@@ -23,6 +23,7 @@ const loggOwnTweets = (data, category) => {
             truncated: data.truncated,
             user: {
                 id: data.user.id,
+                id_str: data.user.id_str,
                 name: data.user.name,
                 screen_name: data.user.screen_name,
                 location: data.user.location,

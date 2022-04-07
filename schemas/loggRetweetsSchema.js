@@ -10,6 +10,7 @@ const loggRetweetsSchema = new Schema({
     text: String,
     user: {
       id: Number,
+      id_str: String,
       name: String,
       screen_name: String,
       location: String,

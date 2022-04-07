@@ -11,6 +11,9 @@ const  { loggRetweets } = require('./loggRetweets');
 const { loggOwnTweets } = require('./loggOwnTweets.js');
 const { loggErrors } = require('./loggErrors.js');
 
+//function for updating tweet data in database (likes and retweets)
+const { updateTweetData } = require('./updateTweetDataInDB')
+
 //setup Twit
 const T = new Twit({
   consumer_key: process.env.TWITTER_API_KEY,
@@ -94,6 +97,10 @@ const sendTweet = async category => {
 getBlockedUsers();
 cron.schedule("0 59 23 * * *", function() {
   getBlockedUsers()
+});
+
+cron.schedule("0 00 10 * * *", function() {
+  updateTweetData()
 });
 
 //Muswiesentweet every tuesday at 15.33

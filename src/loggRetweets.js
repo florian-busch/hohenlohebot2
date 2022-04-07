@@ -17,6 +17,7 @@ const loggRetweets = data => {
             text: data.retweeted_status.text,
             user: {
                 id: data.retweeted_status.user.id,
+                id_str: data.retweeted_status.user.id_str,
                 name: data.retweeted_status.user.name,
                 screen_name: data.retweeted_status.user.screen_name,
                 location: data.retweeted_status.user.location,
