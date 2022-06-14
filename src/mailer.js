@@ -14,12 +14,12 @@ const { loggOwnTweetsSchema } = require('../schemas/loggOwnTweetsSchema');
 const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);
 const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema);
 
+//calculate time objects for db queries for getOwnTweets() and getRetweets()
+const yesterdayStart = moment().subtract(1,'days').startOf('day');
+const yesterdayEnd = moment().subtract(1, 'days').endOf('day')
+
 //get all own tweets from yesterday
 const getOwnTweets = async () => {
-  //create start and end of day objects for query
-  const yesterdayStart = moment().subtract(1,'days').startOf('day');
-  const yesterdayEnd = moment().subtract(1, 'days').endOf('day')
-  
   //db query for yesterdays own tweets
   const ownTweets = await ownTweetsSchema.find( { 'tweet.created_at': { $gte: yesterdayStart, $lte: yesterdayEnd } } )
 
@@ -28,10 +28,6 @@ const getOwnTweets = async () => {
 
 //get all retweets from yesterday
 const getRetweets = async () => {
-  //create start and end of day objects for query
-  const yesterdayStart = moment().subtract(1,'days').startOf('day');
-  const yesterdayEnd = moment().subtract(1, 'days').endOf('day')
-  
   //db query for yesterdays retweets
   const retweets = await retweetModel.find( { 'retweeted_status.created_at': { $gte: yesterdayStart, $lte: yesterdayEnd } } )
 
