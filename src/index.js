@@ -41,7 +41,7 @@ const getBlockedUsers = () => {
 const phrase = "Hohenlohe,hohenlohe,#hohenlohe,#Hohenlohe,Hohenlohisch,hohenlohisch,Hohenloher,hohenloher,@hohenloheb";
 
 //check tweet for words that should not be retweeted (returns true if one or more words are in tweet)
-const blockedWords = ['alfonso', 'hubertus', 'karl'];
+const blockedWords = ['alfonso', 'hubertus', 'karl', 'arknights'];
 const checkForBlockedWords = tweet => blockedWords.some(word => tweet.toLowerCase().includes(word));
  
 
@@ -96,9 +96,9 @@ const sendTweet = async category => {
 /*//Cron-jobs to start different
  tweets and get blocked users//*/
 
-//get blocked users once at start and then once a day
+//get blocked users once at start and then once an hour
 getBlockedUsers();
-cron.schedule("0 59 23 * * *", function() {
+cron.schedule("* 30 * * * *", function() {
   getBlockedUsers()
 });
 
@@ -106,8 +106,8 @@ cron.schedule("0 00 10 * * *", function() {
   updateTweetData()
 });
 
-//Muswiesentweet every tuesday at 15.33
-cron.schedule("0 33 15 * * 2", function() {
+//Muswiesentweet every day at 15.33
+cron.schedule("0 33 10 * * *", function() {
   sendTweet('Muswiese');
 });
 
