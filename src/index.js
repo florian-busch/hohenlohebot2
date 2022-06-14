@@ -11,6 +11,9 @@ const  { loggRetweets } = require('./loggRetweets');
 const { loggOwnTweets } = require('./loggOwnTweets.js');
 const { loggErrors } = require('./loggErrors.js');
 
+//daily statistics mail
+const { sendDailyMail } = require('./mailer');
+
 //function for updating tweet data in database (likes and retweets)
 const { updateTweetData } = require('./updateTweetDataInDB')
 
@@ -116,6 +119,11 @@ cron.schedule("0 12 16 * * 3,5,7", function() {
 //Spruch-Tweet every monday and thursday at 2.30 pm
 cron.schedule("0 30 14 * * 1,4", function() {
   sendTweet('Spruch');
+});
+
+//send daily mail with statistics about yesterdays tweets and retweets
+cron.schedule("0 30 9 * * *", function() {
+  sendDailyMail()
 });
 
 //exports for testing
