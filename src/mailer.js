@@ -14,6 +14,7 @@ const { loggOwnTweetsSchema } = require('../schemas/loggOwnTweetsSchema');
 const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);
 const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema);
 
+//get all own tweets from yesterday
 const getOwnTweets = async () => {
   //create start and end of day objects for query
   const yesterdayStart = moment().subtract(1,'days').startOf('day');
@@ -25,6 +26,7 @@ const getOwnTweets = async () => {
   return ownTweets
 };
 
+//get all retweets from yesterday
 const getRetweets = async () => {
   //create start and end of day objects for query
   const yesterdayStart = moment().subtract(1,'days').startOf('day');
