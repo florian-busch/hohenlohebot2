@@ -11,13 +11,7 @@ const loggErrorSchema = new Schema({
       text: String,
       user: {
         screen_name: String,
-        location: String,
         description: String,
-        followers_count: Number,
-        friends_count: Number,
-        created_at: Date,
-        verified: Boolean,
-        following: Boolean,
       }
     },
     error: {
