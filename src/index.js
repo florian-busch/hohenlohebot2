@@ -106,7 +106,7 @@ cron.schedule("0 00 10 * * *", function() {
   updateTweetData()
 });
 
-//Muswiesentweet every day at 15.33
+//Muswiesentweet every tuesday, thursday and saturday
 cron.schedule("0 33 10 * * 2,4,6", function() {
   sendTweet('Muswiese');
 });
@@ -125,10 +125,6 @@ cron.schedule("0 30 14 * * 1,4", function() {
 cron.schedule("0 30 9 * * *", function() {
   sendDailyMail()
 });
-
-const loggBlock = () => console.log(blocks)
-setInterval(loggBlock, 5000)
-
 
 //exports for testing
 module.exports = { checkForBlockedWords };
