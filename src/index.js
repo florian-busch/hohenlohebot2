@@ -30,7 +30,7 @@ let blocks = [];
 const getBlockedUsers = () => {
   T.get('blocks/ids', function (err, data, response) {
     if (err) {
-      console.log(err)
+      loggErrors(err, 'GetBlockedUsers')
     } else {
       return blocks = data.ids}
     }
@@ -56,7 +56,7 @@ function gotTweet(tweet) {
 
     function retweeted(err, data, response) {
       if (err) {
-        console.log("Error: " + err.message);
+        loggErrors(err, 'Retweet');
       } else {
         //Succesful retweet, logg retweet to db
         loggRetweets(data)

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const moment = require('moment')
 const sgMail = require('@sendgrid/mail')
+const { loggErrors } = require('./loggErrors.js');
 
 //setup mongoose connection
 const mongoose = require('mongoose');
@@ -64,8 +65,8 @@ const sendDailyMail = async () => {
     .then(() => {
       console.log('Email sent')
     })
-    .catch((error) => {
-      console.error(error)
+    .catch((err) => {
+      loggErrors(err, 'Mailer')
     })
 };
 
