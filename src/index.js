@@ -30,6 +30,7 @@ let blocks = [];
 const getBlockedUsers = () => {
   T.get('blocks/ids', function (err, data, response) {
     if (err) {
+      console.log(err)
       loggErrors(err, 'GetBlockedUsers')
     } else {
       return blocks = data.ids}
@@ -56,16 +57,32 @@ function gotTweet(tweet) {
 
     function retweeted(err, data, response) {
       if (err) {
-        loggErrors(err, 'Retweet');
+        console.log('Err-Tweet')
+        console.log(tweet)
+        const errTweet = {
+          id: tweet.id,
+          id_str: tweet.id_str,
+          text: tweet.text,
+          user: {
+            screen_name: tweet.user.screen_name,
+            location: tweet.user.location,
+            description: tweet.user.description,
+            followers_count: tweet.user.followers_count,
+            friends_count: tweet.user.friends_count,
+            created_at: tweet.created_at,
+            verified: tweet.user.verified,
+            following: tweet.user.following,
+          }
+        };
+        loggErrors(err, 'Retweet', errTweet);
       } else {
         //Succesful retweet, logg retweet to db
         loggRetweets(data)
       };
     };
-    //if user is blocked
+    //if user is blocked or tweet contains blocked word
   } else {
-    //user is either blocked or tweet contains blocked word
-    console.log('User ' + tweet.user.id_str + ' is blocked');
+    console.log('User is blocked or tweet contains blocked word');
   }
 };
 console.log('Bot listening');
@@ -84,7 +101,10 @@ const sendTweet = async category => {
   //Send content in tweet, mark content as posted in database afterwards and logg content to db
   T.post('statuses/update', { status: content.text }, (err, data, response) => {
       if (err) {
-        loggErrors(err, 'TweetPost')
+        tweet = {
+          text: content.text
+        }
+        loggErrors(err, 'TweetPost', tweet)
       } else {
         //mark tweet as posted in db and logg tweet to db
         markAsPosted(content);

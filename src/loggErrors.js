@@ -8,9 +8,10 @@ const { loggErrorSchema } = require('../schemas/loggErrorSchema');
 //create mongoose model
 const errorSchema = mongoose.model('errorSchema', loggErrorSchema);
 
-const loggErrors = (err, category) => {
+const loggErrors = (err, category, tweet) => {
     const newError = new errorSchema({
-        category: category,
+        category,
+        tweet,
         error: {
             date: new Date(),
             message: err,
