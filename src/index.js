@@ -38,15 +38,15 @@ const getBlockedUsers = () => {
 };
 
 //key words bot listens for
-const phrase = "Hohenlohe,hohenlohe,#hohenlohe,#Hohenlohe,Hohenlohisch,hohenlohisch,Hohenloher,hohenloher,@hohenloheb";
+const retweetTriggers = process.env.RETWEETTRIGGERS;
 
 //check tweet for words that should not be retweeted (returns true if one or more words are in tweet)
 const blockedWords = ['alfonso', 'hubertus', 'karl', 'arknights'];
 const checkForBlockedWords = tweet => blockedWords.some(word => tweet.toLowerCase().includes(word));
  
 
-//listen for tweets that include phrase
-let stream = T.stream('statuses/filter', { track: phrase });
+//listen for tweets that include retweetTriggers
+let stream = T.stream('statuses/filter', { track: retweetTriggers });
 stream.on('tweet', gotTweet);
 
 //retweet tweets from users that on bots block list and whose tweets that don't contain blocked words
@@ -94,10 +94,10 @@ const sendTweet = async category => {
 };
 
 /*//Cron-jobs to start different
- tweets and get blocked users//*/
+//  tweets and get blocked users//*/
 
 //get blocked users once at start and then once an hour
-getBlockedUsers();
+// getBlockedUsers();
 cron.schedule("* 30 * * * *", function() {
   getBlockedUsers()
 });
