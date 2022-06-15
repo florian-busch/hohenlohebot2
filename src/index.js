@@ -30,7 +30,7 @@ let blocks = [];
 const getBlockedUsers = () => {
   T.get('blocks/ids', function (err, data, response) {
     if (err) {
-      loggErrors(err, 'GetBlockedUsers')
+      console.log(err)
     } else {
       return blocks = data.ids}
     }
