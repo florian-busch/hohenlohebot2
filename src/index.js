@@ -65,13 +65,7 @@ function gotTweet(tweet) {
           text: tweet.text,
           user: {
             screen_name: tweet.user.screen_name,
-            location: tweet.user.location,
             description: tweet.user.description,
-            followers_count: tweet.user.followers_count,
-            friends_count: tweet.user.friends_count,
-            created_at: tweet.created_at,
-            verified: tweet.user.verified,
-            following: tweet.user.following,
           }
         };
         loggErrors(err, 'Retweet', errTweet);
