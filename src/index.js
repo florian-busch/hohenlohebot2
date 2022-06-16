@@ -109,8 +109,8 @@ cron.schedule("0 00 10 * * *", function() {
 });
 
 //Muswiesentweet every tuesday, thursday and saturday
-cron.schedule("0 33 10 * * 2,4,6", function() {
-  sendTweet('Muswiese');
+cron.schedule("0 33 16 * * 2,4,6", function() {
+    sendTweet('Muswiese');
 });
 
 //Vokabel-Tweet every wednesday, friday and sunday at 4.12 pm
@@ -119,7 +119,7 @@ cron.schedule("0 12 16 * * 3,5", function() {
 });
 
 //Spruch-Tweet every monday and thursday at 2.30 pm
-cron.schedule("0 30 14 * * 1,4", function() {
+cron.schedule("0 30 13 * * 1,4", function() {
   sendTweet('Spruch');
 });
 
