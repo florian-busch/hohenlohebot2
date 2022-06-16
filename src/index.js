@@ -41,8 +41,9 @@ const getBlockedUsers = () => {
 const retweetTriggers = process.env.RETWEETTRIGGERS;
 
 //check tweet for words that should not be retweeted (returns true if one or more words are in tweet)
-const blockedWords = ['alfonso', 'hubertus', 'karl', 'arknights'];
-const checkForBlockedWords = tweet => blockedWords.some(word => tweet.toLowerCase().includes(word));
+const blockedWords = process.env.BLOCKEDWORDS
+//split blockedWords to turn string into array
+const checkForBlockedWords = tweet => blockedWords.split(',').some(word => tweet.toLowerCase().includes(word));
  
 
 //listen for tweets that include retweetTriggers
