@@ -2,6 +2,9 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
+//get helpers
+const {currentDateAndTime } = require('./helpers')
+
 //get mongoose Schema for retweets
 const { loggErrorSchema } = require('../schemas/loggErrorSchema');
 
@@ -13,7 +16,7 @@ const loggErrors = (err, category, tweet) => {
         category,
         tweet,
         error: {
-            date: new Date(),
+            date: currentDateAndTime(),
             message: err,
         },
     });

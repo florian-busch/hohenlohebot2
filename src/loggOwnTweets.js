@@ -6,6 +6,8 @@ mongoose.connect(process.env.MONGOCONNECTION);
 //get mongoose Schema for retweets
 const { loggOwnTweetsSchema } = require('../schemas/loggOwnTweetsSchema');
 
+const { currentDateAndTime } = require('./helpers')
+
 //create mongoose model
 const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);
 
@@ -13,7 +15,7 @@ const loggOwnTweets = (data, category) => {
     const newOwnTweet = new ownTweetsSchema({
         category: category,
         tweet: {
-            created_at: data.created_at,
+            created_at: currentDateAndTime(),
             id: data.id,
             id_str: data.id_str,
             text: data.text,

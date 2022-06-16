@@ -5,6 +5,7 @@ mongoose.connect(process.env.MONGOCONNECTION);
 //get mongoose Schema for retweets
 const loggRetweetsSchema = require('../schemas/loggRetweetsSchema');
 const { loggErrors } = require('./loggErrors');
+const { currentDateAndTime } = require('./helpers')
 
 //create mongoose model
 const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema.loggRetweetsSchema);
@@ -12,7 +13,7 @@ const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema.loggRet
 const loggRetweets = data => {
     const newRetweet = new retweetModel({
         retweeted_status: {
-            created_at: data.retweeted_status.created_at,
+            created_at: currentDateAndTime(),
             id: data.retweeted_status.id,
             id_str: data.retweeted_status.id_str,
             text: data.retweeted_status.text,
