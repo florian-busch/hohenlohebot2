@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { loggErrors } = require('./loggErrors');
 
 //setup Twit
 const Twit = require('twit');
@@ -30,7 +31,7 @@ const updateOneTweetInDB = tweetData => {
     },
     options, function (err, doc) {
       if (err) {
-        console.log(err)
+        loggErrors(err, 'Error updating Tweets in DB', tweetData)
       } else {
         console.log(doc)
       }
@@ -41,7 +42,8 @@ const updateOneTweetInDB = tweetData => {
 const getTweetIDsFromDB = async () => {
   let IDs = [];
   await ownTweetsSchema.find()
-  .then(tweets => tweets.forEach(data => IDs.push(data.tweet.id_str)));
+    .then(tweets => tweets.forEach(data => IDs.push(data.tweet.id_str)))
+    .catch(err => loggErrors(err, 'Error retrieving Tweets from DB', data))
 
   return IDs;
 };
@@ -55,7 +57,7 @@ const updateTweetData = async () => {
   tweetIDs.forEach(ID => 
     T.get('statuses/show', { id: ID }, function (err, data, response) {
       if (err) {
-        console.log(err)
+        loggErrors(err, 'Error retrieving data for Tweet-Updates')
       } else {
         updateOneTweetInDB(data)
       };

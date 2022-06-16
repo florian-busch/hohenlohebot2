@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { loggErrors } = require('./loggErrors');
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
@@ -38,7 +39,8 @@ const loggOwnTweets = (data, category) => {
         },
     });
    
-    newOwnTweet.save().then(response => console.log(response));
+    newOwnTweet.save().then(response => console.log(response))
+    .catch(err => loggErrors(err, 'Error saving own Tweet to DB', data));
 };
 
 module.exports = { loggOwnTweets };

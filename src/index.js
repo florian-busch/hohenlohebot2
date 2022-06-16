@@ -37,15 +37,14 @@ const getBlockedUsers = () => {
   )
 };
 
-//key words bot listens for
-const retweetTriggers = process.env.RETWEETTRIGGERS;
-
 //check tweet for words that should not be retweeted (returns true if one or more words are in tweet)
 const blockedWords = process.env.BLOCKEDWORDS
 //split blockedWords to turn string into array
 const checkForBlockedWords = tweet => blockedWords.split(',').some(word => tweet.toLowerCase().includes(word));
  
 
+//key words bot listens for
+const retweetTriggers = process.env.RETWEETTRIGGERS;
 //listen for tweets that include retweetTriggers
 let stream = T.stream('statuses/filter', { track: retweetTriggers });
 stream.on('tweet', gotTweet);
@@ -57,16 +56,7 @@ function gotTweet(tweet) {
 
     function retweeted(err, data, response) {
       if (err) {
-        const errTweet = {
-          id: tweet.id,
-          id_str: tweet.id_str,
-          text: tweet.text,
-          user: {
-            screen_name: tweet.user.screen_name,
-            description: tweet.user.description,
-          }
-        };
-        loggErrors(err, 'Retweet', errTweet);
+        console.log(err);
       } else {
         //Succesful retweet, logg retweet to db
         loggRetweets(data)

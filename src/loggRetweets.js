@@ -4,6 +4,7 @@ mongoose.connect(process.env.MONGOCONNECTION);
 
 //get mongoose Schema for retweets
 const loggRetweetsSchema = require('../schemas/loggRetweetsSchema');
+const { loggErrors } = require('./loggErrors');
 
 //create mongoose model
 const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema.loggRetweetsSchema);
@@ -32,7 +33,8 @@ const loggRetweets = data => {
         },
       });
    
-    newRetweet.save().then(response => console.log(response));
+    newRetweet.save().then(response => console.log(response))
+    .catch(err => loggErrors(err, 'Error saving Retweet', retweeted_status));
 };
 
 module.exports = { loggRetweets };

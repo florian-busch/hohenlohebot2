@@ -18,7 +18,8 @@ const loggErrors = (err, category, tweet) => {
         },
     });
    
-    newError.save().then(response => console.log(response));
+    newError.save().then(response => console.log(response))
+    .catch(err => console.log(err));
 };
 
 module.exports = { loggErrors };
