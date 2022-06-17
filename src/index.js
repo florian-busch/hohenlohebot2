@@ -41,7 +41,6 @@ const getBlockedUsers = () => {
 const blockedWords = process.env.BLOCKEDWORDS
 //split blockedWords to turn string into array
 const checkForBlockedWords = tweet => blockedWords.split(',').some(word => tweet.toLowerCase().includes(word));
- 
 
 //key words bot listens for
 const retweetTriggers = process.env.RETWEETTRIGGERS;

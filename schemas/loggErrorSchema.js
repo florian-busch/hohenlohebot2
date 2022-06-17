@@ -9,6 +9,7 @@ const loggErrorSchema = new Schema({
       id: String,
       is_str: String,
       text: String,
+      created_at: Date,
       user: {
         screen_name: String,
         description: String,

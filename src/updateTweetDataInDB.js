@@ -30,12 +30,23 @@ const updateOneTweetInDB = tweetData => {
       'tweet.retweet_count': tweetData.retweet_count,
     },
     options, function (err, doc) {
-      if (err) {
+      if (err == 'Error: No status found with that ID.') {
         loggErrors(err, 'Error updating Tweets in DB', tweetData)
       } else {
         console.log(doc)
       }
   });
+};
+
+//delete tweets in DB that can't be found on twitter anymore and logg error
+const deleteTweet = async (ID, statusNotFoundError) => {
+  ownTweetsSchema.findOneAndDelete( { 'tweet.id_str': ID }, function (err, doc) {
+    if (err) {
+      loggErrors(err, 'Error while deleting Tweet');
+    } else {
+      loggErrors(statusNotFoundError, 'Error: No tweet found with that ID on Twitter. DB-Entry deleted', doc.tweet)
+    }
+  })
 };
 
 //get IDs from own tweets (not retweets) from db
@@ -56,8 +67,11 @@ const updateTweetData = async () => {
   //for every tweet get current data then pass values to update function
   tweetIDs.forEach(ID => 
     T.get('statuses/show', { id: ID }, function (err, data, response) {
-      if (err) {
-        loggErrors(err, 'Error retrieving data for Tweet-Updates')
+      //if no tweet is found on twitter with ID --> delete tweet from db and logg deletion with loggError
+      if (err == 'Error: No status found with that ID.') {
+        deleteTweet(ID, err)
+      } else if (err) {
+        loggErrors(err, 'Error while retrieving tweets from twitter for updateTweetData')
       } else {
         updateOneTweetInDB(data)
       };
