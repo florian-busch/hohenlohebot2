@@ -15,12 +15,13 @@ const { loggOwnTweetsSchema } = require('../schemas/loggOwnTweetsSchema');
 const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);
 const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema);
 
-//calculate time objects for db queries for getOwnTweets() and getRetweets()
-const yesterdayStart = moment().utcOffset(-2).subtract(1,'days').startOf('day');
-const yesterdayEnd = moment().utcOffset(-2).subtract(1, 'days').endOf('day')
 
 //get all own tweets from yesterday
 const getOwnTweets = async () => {
+  //calculate time objects for db queries for getOwnTweets() and getRetweets()
+  const yesterdayStart = moment().utcOffset(-2).subtract(1, 'days').startOf('day');
+  const yesterdayEnd = moment().utcOffset(-2).subtract(1, 'days').endOf('day')
+
   //db query for yesterdays own tweets
   const ownTweets = await ownTweetsSchema.find( { 'tweet.created_at': { $gte: yesterdayStart, $lte: yesterdayEnd } } )
 
@@ -29,16 +30,15 @@ const getOwnTweets = async () => {
 
 //get all retweets from yesterday
 const getRetweets = async () => {
+   //calculate time objects for db queries for getOwnTweets() and getRetweets()
+   const yesterdayStart = moment().utcOffset(-2).subtract(1, 'days').startOf('day');
+   const yesterdayEnd = moment().utcOffset(-2).subtract(1, 'days').endOf('day')
+ 
   //db query for yesterdays retweets
   const retweets = await retweetModel.find( { 'retweeted_status.created_at': { $gte: yesterdayStart, $lte: yesterdayEnd } } )
 
   return retweets
 };
-
-getRetweets().then(retweets => console.log(retweets))
-getOwnTweets().then(ownTweets => console.log(ownTweets))
-console.log(yesterdayStart)
-console.log(yesterdayEnd)
 
 //sendgrid setup
 sgMail.setApiKey(process.env.SENDGRID_API)
