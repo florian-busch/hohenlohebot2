@@ -1,15 +1,15 @@
 const { currentDateAndTime } = require('./helpers')
 
-//define dates for muswiese 2022, 2023 and todays date
+//define dates for muswiese 2022, 2023
 const muswiese22 = new Date(2022, 9, 8);
 const muswiese23 = new Date(2022, 9, 13);
-const today = currentDateAndTime();
 
 // One day in milliseconds
 const oneDay = 1000 * 60 * 60 * 24;
 
 // Calculating the time difference between 2022 or 2023 muswiese and today
 calculateTimeToMuswiese = () => {
+  const today = currentDateAndTime();
   //if year == 2022 and muswiese has not started yet
   if (new Date().getFullYear() == 2022 && currentDateAndTime() < new Date(Date.UTC(2022, 9, 8))) {
     return muswiese22.getTime() - today.getTime();
