@@ -108,7 +108,7 @@ cron.schedule("0 00 10 * * *", function() {
 });
 
 //Muswiesentweet every tuesday, thursday and saturday
-cron.schedule("0 33 16 * * 2,4,6", function() {
+cron.schedule("0 33 16 * * 0,2,6", function() {
     sendTweet('Muswiese');
 });
 
