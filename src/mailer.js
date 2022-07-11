@@ -75,4 +75,23 @@ const sendDailyMail = async () => {
     })
 };
 
+//send notification mail on restart
+const sendNotificationMail = async () => {
+  sgMail
+    .send({to: process.env.SENDGRID_RECIPIENT,
+      from: process.env.SENDGRID_SENDER,
+      subject: 'Hohenlohe Bot restarted',
+      text: `Hohenlohe Bot was restarted at ${new Date()}`,
+      html: `Hohenlohe Bot was restarted at ${new Date()}`
+    })
+    .then(() => {
+      console.log('Notification Mail sent')
+    })
+    .catch((err) => {
+      loggErrors(err, 'Mailer')
+    })
+};   
+
+sendNotificationMail();
+
 module.exports = { sendDailyMail }
