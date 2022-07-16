@@ -24,7 +24,6 @@ const getOwnTweets = async () => {
 
   //db query for yesterdays own tweets
   const ownTweets = await ownTweetsSchema.find( { 'tweet.created_at': { $gte: yesterdayStart, $lte: yesterdayEnd } } )
-
   return ownTweets
 };
 
@@ -54,7 +53,7 @@ const createMsg = async () => {
   text: `There have been ${ownTweets.length} own Tweets and ${retweets.length} Retweets yesterday`,
   html: `<p>There have been ${ownTweets.length} own Tweets and ${retweets.length} Retweets yesterday.</p>
   <p>These are the tweets:
-  ${ownTweets.map(tweet => `<br>${tweet.tweet.text} at ${tweet.tweet.created_at}`)}</p>
+  ${ownTweets.map(tweet => `<br>${tweet.tweet.text} with ${tweet.tweet.favorite_count} Likes at ${tweet.tweet.created_at}`)}</p>
   <p>These are the retweets:
   ${retweets.map(retweet => `<br><b>Author</b>: ${retweet.retweeted_status.user.screen_name} at ${retweet.retweeted_status.created_at}<br>
   <b>Text</b>: ${retweet.retweeted_status.text}`)}</p>
