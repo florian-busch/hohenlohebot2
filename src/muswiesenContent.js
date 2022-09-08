@@ -11,11 +11,12 @@ const oneDay = 1000 * 60 * 60 * 24;
 // Calculating the time difference between 2022 or 2023 muswiese and today
 calculateTimeToMuswiese = () => {
   const today = currentDateAndTime();
+
   //if year == 2022 and muswiese has not started yet
-  if (new Date().getFullYear() == 2022 && currentDateAndTime() < muswiese22) {
+  if (new Date().getFullYear() == 2022 && today < muswiese22) {
     return muswiese22 - today;
   //if year == 2023 and muswiese from 2022 has ended
-  } else if (new Date().getFullYear() == 2023 && currentDateAndTime() > muswiese23) {
+  } else if (new Date().getFullYear() == 2023 && today > muswiese23) {
     return muswiese23.getTime() - today.getTime()
   }
 };
