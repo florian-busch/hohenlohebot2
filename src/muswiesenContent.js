@@ -2,7 +2,6 @@ const { currentDateAndTime } = require('./helpers')
 
 //define dates for muswiese 2022, 2023
 const muswiese22Start =  new Date(Date.UTC(2022, 9, 8, 0, 1, 0));
-
 const muswiese23Start = new Date(Date.UTC(2022, 9, 13, 12, 15, 0));
 
 // One day in milliseconds
@@ -41,7 +40,5 @@ const getMuswiesenContent = () => {
     return {text: `Ezz sanns bloaß noch ${diffInDays} Dooch bis zur Muswies!`};
   }
 };
-
-console.log(getMuswiesenContent())
 
 module.exports = { getMuswiesenContent };
