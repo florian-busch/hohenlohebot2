@@ -1,8 +1,11 @@
 const { currentDateAndTime } = require('./helpers')
 
-//define dates for muswiese 2022, 2023
+//dates for muswiese 2022, 2023
 const muswiese22Start =  new Date(Date.UTC(2022, 9, 8, 0, 1, 0));
-const muswiese23Start = new Date(Date.UTC(2022, 9, 13, 12, 15, 0));
+const muswiese22End = new Date(Date.UTC(2022, 9, 13, 23, 59, 0));
+const muswiese23Start = new Date(Date.UTC(2023, 9, 7, 12, 15, 0));
+const muswiese23End = new Date(Date.UTC(2023, 9, 12, 12, 15, 0));
+
 
 // One day in milliseconds
 const oneDay = 1000 * 60 * 60 * 24;
@@ -25,10 +28,8 @@ calculateTimeToMuswiese = () => {
 //MuswiesenTweet
 const getMuswiesenContent = () => {
 
-  const muswiese22End = new Date(Date.UTC(2022, 9, 13, 23, 59, 0));
-
   //check if today is muswiese and return according text
-  if (today > muswiese22Start && today < muswiese22End) {
+  if ((today > muswiese22Start && today < muswiese22End) || (today > muswiese23Start && today < muswiese23End)) {
     return {text: 'Endlich is Muswies!'}
   // if not muswiese, return countdown message
   } else {
@@ -40,5 +41,7 @@ const getMuswiesenContent = () => {
     return {text: `Ezz sanns bloaß noch ${diffInDays} Dooch bis zur Muswies!`};
   }
 };
+
+console.log(getMuswiesenContent());
 
 module.exports = { getMuswiesenContent };
