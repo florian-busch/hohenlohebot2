@@ -3,7 +3,7 @@ const Twit = require('twit');
 const cron = require('node-cron');
 
 //external functions for tweet content
-const { getMuswiesenContent } = require('./muswiesenContent.js');
+const { getMuswiesenContent, checkIfTodayMuswiese } = require('./muswiesenContent.js');
 const { getDatabaseContent, markAsPosted } = require('./getDatabaseContent.js');
 
 //logger functions
@@ -46,7 +46,7 @@ const checkForBlockedWords = tweet => blockedWords.split(',').some(word => tweet
 const retweetTriggers = process.env.RETWEETTRIGGERS;
 //listen for tweets that include retweetTriggers
 let stream = T.stream('statuses/filter', { track: retweetTriggers });
-stream.on('tweet', gotTweet);
+// stream.on('tweet', gotTweet);
 
 //retweet tweets from users that on bots block list and whose tweets that don't contain blocked words
 function gotTweet(tweet) {
@@ -71,11 +71,11 @@ console.log('Bot listening');
 //function for tweeting Muswiesentweet, Sprüche and Vokabeln
 const sendTweet = async category => {
   let content = '';
-  if (category == 'Muswiese') {
+  if (category == 'MuswiesenCountdown') {
     content = await getMuswiesenContent();
-  } else if (category == 'Vokabel' || category == 'Spruch') {
+  } else if (category == 'Vokabel' || category == 'Spruch' || category == 'daysOfMuswiese'  ) {
     content = await getDatabaseContent(category);
-  } else {
+  }  else {
     console.log('Error: No valid content category');
   };
 
@@ -94,6 +94,7 @@ const sendTweet = async category => {
     })
 };
 
+
 /*//Cron-jobs to start different
 //  tweets and get blocked users//*/
 
@@ -109,7 +110,11 @@ cron.schedule("0 00 10 * * *", function() {
 
 //Muswiesentweet every tuesday, thursday and saturday
 cron.schedule("0 33 16 * * 0,2,6", function() {
-    sendTweet('Muswiese');
+  if (checkIfTodayMuswiese()) {
+    sendTweet('daysOfMuswiese')
+  } else {
+    sendTweet('MuswiesenCountdown')
+  }
 });
 
 //Vokabel-Tweet every wednesday, friday and sunday at 4.12 pm

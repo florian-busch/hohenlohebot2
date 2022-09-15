@@ -16,32 +16,31 @@ const today = currentDateAndTime();
 // Calculating the time difference between 2022 or 2023 muswiese and today
 calculateTimeToMuswiese = () => {
 
-  //if year == 2022 and muswiese has not started yet
-  if (new Date().getFullYear() == 2022 && today < muswiese22Start) {
+  //muswiese22 has not started yet
+  if (today < muswiese22Start) {
     return muswiese22Start - today;
-  //if year == 2023 and muswiese from 2022 has ended
-  } else if (new Date().getFullYear() == 2023 && today > muswiese23Start) {
-    return muswiese23Start.getTime() - today.getTime()
+  //muswiese22 ended, muswiese23 not started and not ended
+  } else if (today > muswiese22End && today < muswiese23Start) {
+    return muswiese23Start - today
+  }
+};
+
+const checkIfTodayMuswiese = () => {
+  if ((today > muswiese22Start && today < muswiese22End) || (today > muswiese23Start && today < muswiese23End)) {
+    return true
+  } else {
+    return false
   }
 };
 
 //MuswiesenTweet
 const getMuswiesenContent = () => {
+  //get time difference for later umrechnung in days
+  const diffInTime = calculateTimeToMuswiese();
 
-  //check if today is muswiese and return according text
-  if ((today > muswiese22Start && today < muswiese22End) || (today > muswiese23Start && today < muswiese23End)) {
-    return {text: 'Endlich is Muswies!'}
-  // if not muswiese, return countdown message
-  } else {
-    //get time difference for later umrechnung in days
-    const diffInTime = calculateTimeToMuswiese();
-
-    // Calculating the number of days between muswiese and today
-    const diffInDays = Math.round(diffInTime / oneDay);
-    return {text: `Ezz sanns bloaß noch ${diffInDays} Dooch bis zur Muswies!`};
-  }
+  // Calculating the number of days between muswiese and today
+  const diffInDays = Math.round(diffInTime / oneDay);
+  return {text: `Ezz sanns bloaß noch ${diffInDays} Dooch bis zur Muswies!`};
 };
 
-console.log(getMuswiesenContent());
-
-module.exports = { getMuswiesenContent };
+module.exports = { getMuswiesenContent, checkIfTodayMuswiese };
