@@ -46,7 +46,7 @@ const checkForBlockedWords = tweet => blockedWords.split(',').some(word => tweet
 const retweetTriggers = process.env.RETWEETTRIGGERS;
 //listen for tweets that include retweetTriggers
 let stream = T.stream('statuses/filter', { track: retweetTriggers });
-// stream.on('tweet', gotTweet);
+stream.on('tweet', gotTweet);
 
 //retweet tweets from users that on bots block list and whose tweets that don't contain blocked words
 function gotTweet(tweet) {
@@ -75,25 +75,26 @@ const sendTweet = async category => {
     content = await getMuswiesenContent();
   } else if (category == 'Vokabel' || category == 'Spruch' || category == 'daysOfMuswiese'  ) {
     content = await getDatabaseContent(category);
-  }  else {
-    console.log('Error: No valid content category');
   };
 
-  //Send content in tweet, mark content as posted in database afterwards and logg content to db
-  T.post('statuses/update', { status: content.text }, (err, data, response) => {
-      if (err) {
-        tweet = {
-          text: content.text
+  //If content was found in DB --> Send content in tweet, mark content as posted in database afterwards and logg content to db
+  if (content != null) {
+    T.post('statuses/update', { status: content.text }, (err, data, response) => {
+        if (err) {
+          tweet = {
+            text: content.text
+          }
+          loggErrors(err, 'TweetPost', tweet)
+        } else {
+          //mark tweet as posted in db and logg tweet to db
+          markAsPosted(content);
+          loggOwnTweets(data, category);
         }
-        loggErrors(err, 'TweetPost', tweet)
-      } else {
-        //mark tweet as posted in db and logg tweet to db
-        markAsPosted(content);
-        loggOwnTweets(data, category);
-      }
-    })
+      })
+    } else {
+      loggErrors(`No tweet in DB for category: ${category}`, 'TweetRetrieving', )
+    }
 };
-
 
 /*//Cron-jobs to start different
 //  tweets and get blocked users//*/

@@ -22,7 +22,6 @@ const getDatabaseContent = async category => {
     if (category == undefined) {
       return 'No document found';
     } else {
-      console.log(doc)
       return doc
     }
 };

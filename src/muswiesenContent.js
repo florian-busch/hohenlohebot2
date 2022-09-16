@@ -15,7 +15,6 @@ const today = currentDateAndTime();
 
 // Calculating the time difference between 2022 or 2023 muswiese and today
 calculateTimeToMuswiese = () => {
-
   //muswiese22 has not started yet
   if (today < muswiese22Start) {
     return muswiese22Start - today;
