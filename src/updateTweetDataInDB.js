@@ -31,7 +31,7 @@ const updateOneTweetInDB = tweetData => {
     },
     options, function (err, doc) {
       if (err == 'Error: No status found with that ID.') {
-        loggErrors(err, 'Error updating Tweets in DB', tweetData)
+        loggErrors(err, 'updateTweetData', tweetData)
       } else {
         console.log(doc)
       }
