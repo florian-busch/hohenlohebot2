@@ -10,10 +10,12 @@ mongoose.connect(process.env.MONGOCONNECTION);
 //get mongoose Schemas for retweets and own tweets
 const { loggRetweetsSchema } = require('../schemas/loggRetweetsSchema');
 const { loggOwnTweetsSchema } = require('../schemas/loggOwnTweetsSchema');
+const { loggErrorSchema } = require('../schemas/loggErrorSchema');
 
 //set up mongoose models
 const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);
 const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema);
+const errorModel = mongoose.model('errorSchema', loggErrorSchema);
 
 
 //get all own tweets from yesterday
@@ -39,6 +41,14 @@ const getRetweets = async () => {
   return retweets
 };
 
+const getBlockedTweets = async () => {
+  const yesterdayStart = moment().utcOffset(-2).subtract(1, 'days').startOf('day');
+  const yesterdayEnd = moment().utcOffset(-2).subtract(1, 'days').endOf('day')
+
+  const blockedTweets = await errorModel.find( { 'category': 'BlockedWord', 'error.date': { $gte: yesterdayStart, $lte: yesterdayEnd } } );
+  return blockedTweets
+}
+
 //sendgrid setup
 sgMail.setApiKey(process.env.SENDGRID_API)
 
@@ -46,17 +56,21 @@ sgMail.setApiKey(process.env.SENDGRID_API)
 const createMsg = async () => {
   const retweets = await getRetweets();
   const ownTweets = await getOwnTweets();
+  const blockedTweets = await getBlockedTweets();
 
   return {to: process.env.SENDGRID_RECIPIENT,
   from: process.env.SENDGRID_SENDER,
   subject: 'HohenloheBot Daily Update',
-  text: `There have been ${ownTweets.length} own Tweets and ${retweets.length} Retweets yesterday`,
-  html: `<p>There have been ${ownTweets.length} own Tweets and ${retweets.length} Retweets yesterday.</p>
+  text: `There have been ${ownTweets.length} own Tweets, ${retweets.length} Retweets and ${blockedTweets.length} blocked Tweets yesterday`,
+  html: `<p>There have been ${ownTweets.length} own Tweets, ${retweets.length} Retweets and ${blockedTweets.length} blocked Tweets yesterday.</p>
   <p>These are the tweets:
   ${ownTweets.map(tweet => `<br>${tweet.tweet.text} with ${tweet.tweet.favorite_count} Likes at ${tweet.tweet.created_at}`)}</p>
   <p>These are the retweets:
   ${retweets.map(retweet => `<br><b>Author</b>: ${retweet.retweeted_status.user.screen_name} at ${retweet.retweeted_status.created_at}<br>
   <b>Text</b>: ${retweet.retweeted_status.text}`)}</p>
+  <p>These are the blockedTweets:
+  ${blockedTweets.map(blockedTweet => `<br><b>Author</b>: ${blockedTweet.tweet.user.screen_name}<br>
+  <b>Text</b>: ${blockedTweet.tweet.text}`)}</p>
   `
   }
 };
