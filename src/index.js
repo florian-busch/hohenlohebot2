@@ -50,7 +50,13 @@ stream.on('tweet', gotTweet);
 
 //retweet tweets from users that on bots block list and whose tweets that don't contain blocked words
 function gotTweet(tweet) {
-  if(!blocks.includes(tweet.user.id) && !checkForBlockedWords(tweet.text)) {
+  if (blocks.includes(tweet.user.id)) {
+    loggErrors(`Blocked User with id: ${tweet.user.id}`, 'BlockedUser', tweet)
+  } else if (checkForBlockedWords(tweet.text)) {
+    loggErrors(`Blocked Word in tweet: ${tweet.text}`, 'BlockedWord', tweet )
+
+    //if no blocked users and no blocked words --> retweet tweet
+  } else if(!blocks.includes(tweet.user.id) && !checkForBlockedWords(tweet.text)) {
     T.post('statuses/retweet', { id: tweet.id_str }, retweeted);
 
     function retweeted(err, data, response) {
@@ -63,7 +69,7 @@ function gotTweet(tweet) {
     };
     //if user is blocked or tweet contains blocked word
   } else {
-    console.log('User is blocked or tweet contains blocked word');
+    console.log('Unknown error');
   }
 };
 console.log('Bot listening');

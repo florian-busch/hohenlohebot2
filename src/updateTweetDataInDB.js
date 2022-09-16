@@ -31,7 +31,7 @@ const updateOneTweetInDB = tweetData => {
     },
     options, function (err, doc) {
       if (err == 'Error: No status found with that ID.') {
-        loggErrors(err, 'updateTweetData', tweetData)
+        loggErrors(err, 'Error updating Tweets in DB', tweetData)
       } else {
         console.log(doc)
       }
@@ -69,9 +69,9 @@ const updateTweetData = async () => {
     T.get('statuses/show', { id: ID }, function (err, data, response) {
       //if no tweet is found on twitter with ID --> delete tweet from db and logg deletion with loggError
       if (err == 'Error: No status found with that ID.') {
-        deleteTweet(ID, err)
+        deleteTweet(ID, 'tweetUpdate: ID not found')
       } else if (err) {
-        loggErrors(err, 'Error while retrieving tweets from twitter for updateTweetData')
+        loggErrors(err, 'tweetRetrieving')
       } else {
         updateOneTweetInDB(data)
       };
