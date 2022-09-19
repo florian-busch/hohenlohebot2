@@ -60,16 +60,17 @@ function gotTweet(tweet) {
     T.post('statuses/retweet', { id: tweet.id_str }, retweeted);
 
     function retweeted(err, data, response) {
+      //if error at retweeting --> logg error
       if (err) {
-        console.log(err);
+        loggErrors(err, 'errorRetweeting', tweet);
       } else {
         //Succesful retweet, logg retweet to db
         loggRetweets(data)
       };
     };
-    //if user is blocked or tweet contains blocked word
+    //if other errors at retweeting
   } else {
-    console.log('Unknown error');
+    loggErrors(err, 'unknownErrorRetweeting', tweet);
   }
 };
 console.log('Bot listening');
@@ -98,7 +99,7 @@ const sendTweet = async category => {
         }
       })
     } else {
-      loggErrors(`No tweet in DB for category: ${category}`, 'TweetRetrieving', )
+      loggErrors(`No tweet in DB for category: ${category}`, 'TweetRetrieving')
     }
 };
 
@@ -115,8 +116,17 @@ cron.schedule("0 00 10 * * *", function() {
   updateTweetData()
 });
 
-//Muswiesentweet every tuesday, thursday and saturday
-cron.schedule("0 33 16 * * 0,2,6", function() {
+//Muswiesentweet every sunday and thursday
+cron.schedule("0 33 16 * * 0,4", function() {
+  if (checkIfTodayMuswiese()) {
+    sendTweet('daysOfMuswiese')
+  } else {
+    sendTweet('MuswiesenCountdown')
+  }
+});
+
+//Muswiesentweet every tuesday and saturday
+cron.schedule("0 33 10 * * 2,6", function() {
   if (checkIfTodayMuswiese()) {
     sendTweet('daysOfMuswiese')
   } else {

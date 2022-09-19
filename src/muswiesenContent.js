@@ -1,7 +1,7 @@
 const { currentDateAndTime } = require('./helpers')
 
 //dates for muswiese 2022, 2023
-const muswiese22Start =  new Date(Date.UTC(2022, 9, 8, 0, 1, 0));
+const muswiese22Start =  new Date(Date.UTC(2022, 9, 8, 12, 12, 0));
 const muswiese22End = new Date(Date.UTC(2022, 9, 13, 23, 59, 0));
 const muswiese23Start = new Date(Date.UTC(2023, 9, 7, 12, 15, 0));
 const muswiese23End = new Date(Date.UTC(2023, 9, 12, 12, 15, 0));
@@ -34,12 +34,22 @@ const checkIfTodayMuswiese = () => {
 
 //MuswiesenTweet
 const getMuswiesenContent = () => {
-  //get time difference for later umrechnung in days
-  const diffInTime = calculateTimeToMuswiese();
+  //get time difference for umrechnung to days and hours
+  const diffInUnixTime = calculateTimeToMuswiese();
 
   // Calculating the number of days between muswiese and today
-  const diffInDays = Math.round(diffInTime / oneDay);
-  return {text: `Ezz sanns bloaß noch ${diffInDays} Dooch bis zur Muswies!`};
+  const diffInFullDays = Math.floor(diffInUnixTime / oneDay);
+
+  /* Calculating remaining hours --> 
+  1. differenceInUnixTime / oneDayInUnixTime
+  2. remainingDaysWithDecimal - rounded differenceInFullDays without decimal
+  3. rounded(remainingDaysWithDecimals times 24)  
+  */
+  const remainingDaysWithDecimal = diffInUnixTime / oneDay;
+  const decimalRemainingHours = remainingDaysWithDecimal - diffInFullDays;
+  const remainingHours = Math.floor(decimalRemainingHours * 24);
+
+  return {text: `Ezz sanns bloaß noch ${diffInFullDays} Dooch und ${remainingHours} Stund bis zur Muswies!`};
 };
 
 module.exports = { getMuswiesenContent, checkIfTodayMuswiese };
