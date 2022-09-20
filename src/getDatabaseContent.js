@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
 //get Schema from schema file
-const { textSchema } = require('../schemas/textSchema');
+const { textSchema } = require('./schemas/textSchema');
 
 //get helpers
 const { currentDateAndTime } = require('./helpers')

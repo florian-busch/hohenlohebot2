@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
 //get mongoose Schema for retweets
-const loggRetweetsSchema = require('../schemas/loggRetweetsSchema');
+const loggRetweetsSchema = require('./schemas/loggRetweetsSchema');
 const { loggErrors } = require('./loggErrors');
 const { currentDateAndTime } = require('./helpers')
 

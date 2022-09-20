@@ -14,7 +14,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
 //get Schema from schema file
-const { loggOwnTweetsSchema } = require('../schemas/loggOwnTweetsSchema');
+const { loggOwnTweetsSchema } = require('./schemas/loggOwnTweetsSchema');
 
 //Model setup
 const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);

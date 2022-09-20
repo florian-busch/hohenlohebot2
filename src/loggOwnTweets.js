@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
 //get mongoose Schema for retweets
-const { loggOwnTweetsSchema } = require('../schemas/loggOwnTweetsSchema');
+const { loggOwnTweetsSchema } = require('./schemas/loggOwnTweetsSchema');
 
 const { currentDateAndTime } = require('./helpers')
 
