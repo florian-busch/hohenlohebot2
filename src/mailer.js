@@ -7,7 +7,7 @@ const { loggErrors } = require('./loggErrors.js');
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
-//get mongoose Schemas for retweets and own tweets
+//get mongoose Schemas for retweets, own tweets and errors
 const { loggRetweetsSchema } = require('./schemas/loggRetweetsSchema');
 const { loggOwnTweetsSchema } = require('./schemas/loggOwnTweetsSchema');
 const { loggErrorSchema } = require('./schemas/loggErrorSchema');
@@ -17,45 +17,43 @@ const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);
 const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema);
 const errorModel = mongoose.model('errorSchema', loggErrorSchema);
 
+//calculate time objects for db queries
+const getYesterdayStart = () => {
+  return moment().utcOffset(-2).subtract(1, 'days').startOf('day');
+};
+
+const getYesterdayEnd = () => {
+  return moment().utcOffset(-2).subtract(1, 'days').endOf('day')
+};
 
 //get all own tweets from yesterday
 const getOwnTweets = async () => {
-  //calculate time objects for db queries for getOwnTweets() and getRetweets()
-  const yesterdayStart = moment().utcOffset(-2).subtract(1, 'days').startOf('day');
-  const yesterdayEnd = moment().utcOffset(-2).subtract(1, 'days').endOf('day')
 
   //db query for yesterdays own tweets
-  const ownTweets = await ownTweetsSchema.find( { 'tweet.created_at': { $gte: yesterdayStart, $lte: yesterdayEnd } } )
+  const ownTweets = await ownTweetsSchema.find( { 'tweet.created_at': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } )
   return ownTweets
 };
 
 //get all retweets from yesterday
 const getRetweets = async () => {
-   //calculate time objects for db queries for getOwnTweets() and getRetweets()
-   const yesterdayStart = moment().utcOffset(-2).subtract(1, 'days').startOf('day');
-   const yesterdayEnd = moment().utcOffset(-2).subtract(1, 'days').endOf('day')
- 
-  //db query for yesterdays retweets
-  const retweets = await retweetModel.find( { 'retweeted_status.created_at': { $gte: yesterdayStart, $lte: yesterdayEnd } } )
+  const retweets = await retweetModel.find( { 'retweeted_status.created_at': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } );
 
   return retweets
 };
 
+//get all blocked Tweets from yesterday
 const getBlockedTweets = async () => {
-  const yesterdayStart = moment().utcOffset(-2).subtract(1, 'days').startOf('day');
-  const yesterdayEnd = moment().utcOffset(-2).subtract(1, 'days').endOf('day')
+  const blockedTweets = await errorModel.find( { 'category': 'BlockedWord', 'error.date': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } );
 
-  const blockedTweets = await errorModel.find( { 'category': 'BlockedWord', 'error.date': { $gte: yesterdayStart, $lte: yesterdayEnd } } );
   return blockedTweets
 };
 
+//get all tweets from blocked users from yesterday
 const getBlockedUserTweets = async () => {
-  const yesterdayStart = moment().utcOffset(-2).subtract(1, 'days').startOf('day');
-  const yesterdayEnd = moment().utcOffset(-2).subtract(1, 'days').endOf('day')
-
-  const blockedUserTweets = await errorModel.find( { 'category': 'BlockedUser', 'error.date': { $gte: yesterdayStart, $lte: yesterdayEnd } } );
+  const blockedUserTweets = await errorModel.find( { 'category': 'BlockedUser', 'error.date': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } );
+  
   return blockedUserTweets
-}
+};
 
 //sendgrid setup
 sgMail.setApiKey(process.env.SENDGRID_API)
