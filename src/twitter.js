@@ -44,9 +44,9 @@ stream.on('tweet', gotTweet);
 //retweet tweets from users that on bots block list and whose tweets that don't contain blocked words
 function gotTweet(tweet) {
   if (blocks.includes(tweet.user.id)) {
-    loggErrors(`Blocked User with id: ${tweet.user.id}`, 'BlockedUser', tweet)
+    loggErrors( {category: 'BlockedUser', message: `Blocked User with id: ${tweet.user.id}`, tweet: tweet } )
   } else if (checkForBlockedWords(tweet.text)) {
-    loggErrors(`Blocked Word in tweet: ${tweet.text}`, 'BlockedWord', tweet )
+    loggErrors( { category: 'BlockedWord', message: `Blocked word in tweet: with id: ${tweet.text}`, tweet: tweet } )
 
     //if no blocked users and no blocked words --> retweet tweet
   } else if(!blocks.includes(tweet.user.id) && !checkForBlockedWords(tweet.text)) {
@@ -63,7 +63,7 @@ function gotTweet(tweet) {
     };
     //if other errors at retweeting
   } else {
-    loggErrors(err, 'unknownErrorRetweeting', tweet);
+    loggErrors( {category: 'ErrorRetweeting', message: err, tweet: tweet } );
   }
 };
 console.log('Bot listening');
@@ -84,7 +84,7 @@ const sendTweet = async category => {
           tweet = {
             text: content.text
           }
-          loggErrors(err, 'TweetPost', tweet)
+          loggErrors( {category: 'TweetPost', message: err, tweet: tweet } )
         } else {
           //mark tweet as posted in db and logg tweet to db
           markAsPosted(content);
@@ -92,7 +92,7 @@ const sendTweet = async category => {
         }
       })
     } else {
-      loggErrors(`No tweet in DB for category: ${category}`, 'TweetRetrieving')
+      loggErrors( {category: 'TweetRetrieving', message: `No tweet in DB for category: ${category}` } )
     }
 };
 

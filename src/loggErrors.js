@@ -11,18 +11,16 @@ const { loggErrorSchema } = require('./schemas/loggErrorSchema');
 //create mongoose model
 const errorSchema = mongoose.model('errorSchema', loggErrorSchema);
 
-const loggErrors = (err, category, tweet) => {
+const loggErrors = (error) => {
     const newError = new errorSchema({
-        category,
-        tweet,
-        error: {
-            date: currentDateAndTime(),
-            message: err,
-        },
+        category: error.category,
+        date: new Date(),
+        message: error.message,
+        tweet: error.tweet,
     });
    
     newError.save().then(response => console.log(response))
-    .catch(err => loggErrors(err, 'LoggingError', tweet));
+    .catch(err => loggErrors( {category: 'LoggingError', message: err } ));
 };
 
 module.exports = { loggErrors };

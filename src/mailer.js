@@ -95,7 +95,7 @@ const sendDailyMail = async () => {
       console.log('Email sent')
     })
     .catch((err) => {
-      loggErrors(err, 'Mailer')
+      loggErrors( {category: 'Mailer', message: err } )
     })
 };
 
@@ -112,7 +112,7 @@ const sendNotificationMail = async () => {
       console.log('Notification Mail sent')
     })
     .catch((err) => {
-      loggErrors(err, 'Mailer')
+      loggErrors( {category: 'Mailer', message: err } )
     })
 };   
 

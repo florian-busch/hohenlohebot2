@@ -31,7 +31,7 @@ const updateOneTweetInDB = tweetData => {
     },
     options, function (err, doc) {
       if (err == 'Error: No status found with that ID.') {
-        loggErrors(err, 'Error updating Tweets in DB', tweetData)
+        loggErrors( {category: 'DbUpdates', message: err, tweet: tweetDate } )
       } else {
         console.log(doc)
       }
@@ -39,12 +39,12 @@ const updateOneTweetInDB = tweetData => {
 };
 
 //delete tweets in DB that can't be found on twitter anymore and logg error
-const deleteTweet = async (ID, statusNotFoundError) => {
+const deleteTweet = async (ID) => {
   ownTweetsSchema.findOneAndDelete( { 'tweet.id_str': ID }, function (err, doc) {
     if (err) {
-      loggErrors(err, 'Error while deleting Tweet');
+      loggErrors( {category: 'Delete', message: err, tweet: tweet } );
     } else {
-      loggErrors(statusNotFoundError, 'Error: No tweet found with that ID on Twitter. DB-Entry deleted', doc.tweet)
+      loggErrors( {category: 'MissingID', message: 'No tweet found with that ID on Twitter. DB-Entry deleted', tweet: doc.tweet } )
     }
   })
 };
@@ -54,7 +54,7 @@ const getTweetIDsFromDB = async () => {
   let IDs = [];
   await ownTweetsSchema.find()
     .then(tweets => tweets.forEach(data => IDs.push(data.tweet.id_str)))
-    .catch(err => loggErrors(err, 'Error retrieving Tweets from DB', data))
+    .catch(err => loggErrors( {category: 'TweetDB', message: err, tweet: data.tweet } ))
 
   return IDs;
 };
@@ -69,9 +69,9 @@ const updateTweetData = async () => {
     T.get('statuses/show', { id: ID }, function (err, data, response) {
       //if no tweet is found on twitter with ID --> delete tweet from db and logg deletion with loggError
       if (err == 'Error: No status found with that ID.') {
-        deleteTweet(ID, 'tweetUpdate: ID not found')
+        deleteTweet(ID)
       } else if (err) {
-        loggErrors(err, 'tweetRetrieving')
+        loggErrors( { category: tweetRetrieving, message: err })
       } else {
         updateOneTweetInDB(data)
       };

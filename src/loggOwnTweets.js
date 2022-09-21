@@ -11,38 +11,38 @@ const { currentDateAndTime } = require('./helpers')
 //create mongoose model
 const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);
 
-const loggOwnTweets = (data, category) => {
+const loggOwnTweets = (tweet, category) => {
     const newOwnTweet = new ownTweetsSchema({
         category: category,
         tweet: {
             created_at: currentDateAndTime(),
-            id: data.id,
-            id_str: data.id_str,
-            text: data.text,
-            retweet_count: data.retweet_count,
-            favorite_count: data.favorite_count,
-            favorited: data.favorited,
-            retweeted: data.retweeted,
-            truncated: data.truncated,
+            id: tweet.id,
+            id_str: tweet.id_str,
+            text: tweet.text,
+            retweet_count: tweet.retweet_count,
+            favorite_count: tweet.favorite_count,
+            favorited: tweet.favorited,
+            retweeted: tweet.retweeted,
+            truncated: tweet.truncated,
             user: {
-                id: data.user.id,
-                id_str: data.user.id_str,
-                name: data.user.name,
-                screen_name: data.user.screen_name,
-                location: data.user.location,
-                description: data.user.description,
-                followers_count: data.user.followers_count,
-                friends_count: data.user.friends_count,
-                listed_count: data.user.listed_count,
-                statuses_count: data.user.statuses_count,
-                created_at: data.user.created_at,
-                verified: data.user.verified,
+                id: tweet.user.id,
+                id_str: tweet.user.id_str,
+                name: tweet.user.name,
+                screen_name: tweet.user.screen_name,
+                location: tweet.user.location,
+                description: tweet.user.description,
+                followers_count: tweet.user.followers_count,
+                friends_count: tweet.user.friends_count,
+                listed_count: tweet.user.listed_count,
+                statuses_count: tweet.user.statuses_count,
+                created_at: tweet.user.created_at,
+                verified: tweet.user.verified,
             },
         },
     });
    
     newOwnTweet.save().then(response => console.log(response))
-    .catch(err => loggErrors(err, 'Error saving own Tweet to DB', data));
+    .catch(err => loggErrors( {category: 'SaveTweetToDB', message: err, tweet: tweet } ));
 };
 
 module.exports = { loggOwnTweets };

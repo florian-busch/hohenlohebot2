@@ -35,7 +35,7 @@ const loggRetweets = data => {
       });
    
     newRetweet.save().then(response => console.log(response))
-    .catch(err => loggErrors(err, 'Error saving Retweet', retweeted_status));
+    .catch(err => loggErrors( {category: 'RetweetSave', message: err, tweet: tweet } ));
 };
 
 module.exports = { loggRetweets };
