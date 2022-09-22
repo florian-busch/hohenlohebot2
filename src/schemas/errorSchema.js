@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 //Schema
 const { Schema } = mongoose;
-const loggErrorSchema = new Schema({
+const errorSchema = new Schema({
   //TO DO: implement error logging for retweet fail and get blocked user fail
   category: String,
   date: Date,
@@ -34,4 +34,4 @@ const loggErrorSchema = new Schema({
   },
 })
 
-module.exports = { loggErrorSchema };
+module.exports = { errorSchema };

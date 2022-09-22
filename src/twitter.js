@@ -52,13 +52,13 @@ function gotTweet(tweet) {
   } else if(!blocks.includes(tweet.user.id) && !checkForBlockedWords(tweet.text)) {
     T.post('statuses/retweet', { id: tweet.id_str }, retweeted);
 
-    function retweeted(err, data, response) {
+    function retweeted(err, tweet, response) {
       //if error at retweeting --> logg error
       if (err) {
         console.log(err);
       } else {
         //Succesful retweet, logg retweet to db
-        loggRetweets(data)
+        loggRetweets(tweet)
       };
     };
     //if other errors at retweeting

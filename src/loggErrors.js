@@ -6,15 +6,15 @@ mongoose.connect(process.env.MONGOCONNECTION);
 const {currentDateAndTime } = require('./helpers')
 
 //get mongoose Schema for retweets
-const { loggErrorSchema } = require('./schemas/loggErrorSchema');
+const { errorSchema } = require('./schemas/errorSchema');
 
 //create mongoose model
-const errorSchema = mongoose.model('errorSchema', loggErrorSchema);
+const errorModel = mongoose.model('errorSchema', errorSchema);
 
 const loggErrors = (error) => {
-    const newError = new errorSchema({
+    const newError = new errorModel({
         category: error.category,
-        date: new Date(),
+        date: currentDateAndTime(),
         message: error.message,
         tweet: error.tweet,
     });

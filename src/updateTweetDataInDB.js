@@ -14,16 +14,16 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
 //get Schema from schema file
-const { loggOwnTweetsSchema } = require('./schemas/loggOwnTweetsSchema');
+const { ownTweetsSchema } = require('./schemas/ownTweetsSchema');
 
 //Model setup
-const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);
+const ownTweetsModel = mongoose.model('loggedOwnTweets', ownTweetsSchema);
 
 //update tweet likes and retweets in db
 const updateOneTweetInDB = tweetData => {
   const query = { 'tweet.id_str': tweetData.id_str };
   const options = { new: true }
-  ownTweetsSchema.findOneAndUpdate(
+  ownTweetsModel.findOneAndUpdate(
     query, 
     {
       'tweet.favorite_count': tweetData.favorite_count,
@@ -40,7 +40,7 @@ const updateOneTweetInDB = tweetData => {
 
 //delete tweets in DB that can't be found on twitter anymore and logg error
 const deleteTweet = async (ID) => {
-  ownTweetsSchema.findOneAndDelete( { 'tweet.id_str': ID }, function (err, doc) {
+  ownTweetsModel.findOneAndDelete( { 'tweet.id_str': ID }, function (err, doc) {
     if (err) {
       loggErrors( {category: 'Delete', message: err, tweet: tweet } );
     } else {
@@ -52,7 +52,7 @@ const deleteTweet = async (ID) => {
 //get IDs from own tweets (not retweets) from db
 const getTweetIDsFromDB = async () => {
   let IDs = [];
-  await ownTweetsSchema.find()
+  await ownTweetsModel.find()
     .then(tweets => tweets.forEach(data => IDs.push(data.tweet.id_str)))
     .catch(err => loggErrors( {category: 'TweetDB', message: err, tweet: data.tweet } ))
 

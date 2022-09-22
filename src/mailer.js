@@ -8,14 +8,14 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOCONNECTION);
 
 //get mongoose Schemas for retweets, own tweets and errors
-const { loggRetweetsSchema } = require('./schemas/loggRetweetsSchema');
-const { loggOwnTweetsSchema } = require('./schemas/loggOwnTweetsSchema');
-const { loggErrorSchema } = require('./schemas/loggErrorSchema');
+const { retweetSchema } = require('./schemas/retweetsSchema');
+const { ownTweetsSchema } = require('./schemas/ownTweetsSchema');
+const { errorSchema } = require('./schemas/errorSchema');
 
 //set up mongoose models
-const ownTweetsSchema = mongoose.model('loggedOwnTweets', loggOwnTweetsSchema);
-const retweetModel = mongoose.model('loggedRetweets', loggRetweetsSchema);
-const errorModel = mongoose.model('errorSchema', loggErrorSchema);
+const ownTweetsModel = mongoose.model('loggedOwnTweets', ownTweetsSchema);
+const retweetModel = mongoose.model('Retweets', retweetSchema);
+const errorModel = mongoose.model('errorSchema', errorSchema);
 
 //calculate time objects for db queries
 const getYesterdayStart = () => {
@@ -30,7 +30,7 @@ const getYesterdayEnd = () => {
 const getOwnTweets = async () => {
 
   //db query for yesterdays own tweets
-  const ownTweets = await ownTweetsSchema.find( { 'tweet.created_at': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } )
+  const ownTweets = await ownTweetsModel.find( { 'tweet.created_at': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } )
   return ownTweets
 };
 

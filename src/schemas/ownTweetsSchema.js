@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 //Schema
 const { Schema } = mongoose;
-const loggOwnTweetsSchema = new Schema({
+const ownTweetsSchema = new Schema({
     category: String,
     tweet: {
         created_at: Date,
@@ -31,4 +31,4 @@ const loggOwnTweetsSchema = new Schema({
     },
   });
 
-module.exports = { loggOwnTweetsSchema };
+module.exports = { ownTweetsSchema };
