@@ -33,7 +33,7 @@ const loggRetweets = tweet => {
                 following: tweet.retweeted_status.user.following,
             },
         },
-        created_at: tweet.created_at,
+        created_at: currentDateAndTime(),
         id: tweet.id,
         id_str: tweet.id_str,
         text: tweet.text,
