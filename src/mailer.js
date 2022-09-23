@@ -36,21 +36,21 @@ const getOwnTweets = async () => {
 
 //get all retweets from yesterday
 const getRetweets = async () => {
-  const retweets = await retweetModel.find( { 'retweeted_status.created_at': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } );
+  const retweets = await retweetModel.find( { 'created_at': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } );
 
   return retweets
 };
 
 //get all blocked Tweets from yesterday
 const getBlockedTweets = async () => {
-  const blockedTweets = await errorModel.find( { 'category': 'BlockedWord', 'error.date': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } );
+  const blockedTweets = await errorModel.find( { 'category': 'BlockedWord', 'date': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } );
 
   return blockedTweets
 };
 
 //get all tweets from blocked users from yesterday
 const getBlockedUserTweets = async () => {
-  const blockedUserTweets = await errorModel.find( { 'category': 'BlockedUser', 'error.date': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } );
+  const blockedUserTweets = await errorModel.find( { 'category': 'BlockedUser', 'date': { $gte: getYesterdayStart(), $lte: getYesterdayEnd() } } );
   
   return blockedUserTweets
 };
@@ -116,6 +116,6 @@ const sendNotificationMail = async () => {
     })
 };   
 
-sendNotificationMail();
-
+// sendNotificationMail();
+sendDailyMail()
 module.exports = { sendDailyMail }
