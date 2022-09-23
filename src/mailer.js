@@ -13,7 +13,7 @@ const { ownTweetsSchema } = require('./schemas/ownTweetsSchema');
 const { errorSchema } = require('./schemas/errorSchema');
 
 //set up mongoose models
-const ownTweetsModel = mongoose.model('loggedOwnTweets', ownTweetsSchema);
+const ownTweetsModel = mongoose.model('ownTweets', ownTweetsSchema);
 const retweetModel = mongoose.model('Retweets', retweetSchema);
 const errorModel = mongoose.model('errorSchema', errorSchema);
 
@@ -116,6 +116,6 @@ const sendNotificationMail = async () => {
     })
 };   
 
-// sendNotificationMail();
-sendDailyMail()
+sendNotificationMail();
+
 module.exports = { sendDailyMail }

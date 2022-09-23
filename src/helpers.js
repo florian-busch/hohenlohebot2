@@ -7,65 +7,66 @@ const currentDateAndTime = function createDateAsUTC() {
 module.exports = { currentDateAndTime }
 
 
-// // //helper function to move retweets from old schema to new schema
+// // //helper function to move tweets from old schema to new schema
 // // require('dotenv').config();
 
 // // const mongoose = require('mongoose');
 // // mongoose.connect(process.env.MONGOCONNECTION);
 
 // // //old retweet-Schema
-// // const { temporaryRetweets } = require('./schemas/temporaryRetweetsSchema');
-// // const { retweetSchema } = require('./schemas/retweetsSchema');
+// // const { temporaryOwnTweets } = require('./schemas/temporaryOwnTweetsSchema')
+// // const { ownTweetsSchema } = require('./schemas/ownTweetsSchema');
 
-// // const oldReweetsModel = mongoose.model('loggedretweets', temporaryRetweets);
+// // const oldTweetsModel = mongoose.model('loggedOwnTweets', temporaryOwnTweets);
 
 
 // // //new retweet-Schema
-// // const newRetweetModel = mongoose.model('Retweets', retweetSchema);
+// // const newTweetModel = mongoose.model('ownTweets', ownTweetsSchema);
 
 // // // save tweets to new schema
 // // const saveTweetToNewSchema = tweet => {
-// //     const newRetweet = new newRetweetModel({
-// //         retweeted_status: {
-// //             created_at: tweet.retweeted_status.created_at,
-// //             id: tweet.retweeted_status.id,
-// //             id_str: tweet.retweeted_status.id_str,
-// //             text: tweet.retweeted_status.text,
-// //             truncated: tweet.retweeted_status.truncated,
+// //     const newOwnTweet = new newTweetModel({
+// //         category: tweet.category,
+// //         tweet: {
+// //             created_at: tweet.tweet.created_at,
+// //             id: tweet.tweet.id,
+// //             id_str: tweet.tweet.id_str,
+// //             text: tweet.tweet.text,
+// //             truncated: tweet.tweet.truncated,
+// //             retweet_count: tweet.tweet.retweet_count,
+// //             favorite_count: tweet.tweet.favorite_count,
+// //             favorited: tweet.tweet.favorited,
+// //             retweeted: tweet.tweet.retweeted,
 // //             user: {
-// //                 id: tweet.retweeted_status.user.id,
-// //                 id_str: tweet.retweeted_status.user.id_str,
-// //                 name: tweet.retweeted_status.user.name,
-// //                 screen_name: tweet.retweeted_status.user.screen_name,
-// //                 location: tweet.retweeted_status.user.location,
-// //                 description: tweet.retweeted_status.user.description,
-// //                 followers_count: tweet.retweeted_status.user.followers_count,
-// //                 friends_count: tweet.retweeted_status.user.friends_count,
-// //                 created_at: tweet.retweeted_status.user.created_at,
-// //                 verified: tweet.retweeted_status.user.verified,
-// //                 following: tweet.retweeted_status.user.following,
+// //                 id: tweet.tweet.user.id,
+// //                 id_str: tweet.tweet.user.id_str,
+// //                 name: tweet.tweet.user.name,
+// //                 screen_name: tweet.tweet.user.screen_name,
+// //                 location: tweet.tweet.user.location,
+// //                 description: tweet.tweet.user.description,
+// //                 followers_count: tweet.tweet.user.followers_count,
+// //                 friends_count: tweet.tweet.user.friends_count,
+// //                 created_at: tweet.tweet.user.created_at,
+// //                 verified: tweet.tweet.user.verified,
+// //                 following: tweet.tweet.user.following,
 // //             },
 // //         },
-// //         created_at: tweet.created_at,
-// //         id: tweet.id,
-// //         id_str: tweet.id_str,
-// //         text: tweet.text,
 // //       });
-// //       newRetweet.save().then(response => console.log(response))
+// //       newOwnTweet.save().then(response => console.log(response))
 // //       console.log('DONE')
 // // }
 
 // // //get IDs from old retweets from db
 // // const getTweetIDsFromDB = async () => {
 // //     let IDs = [];
-// //     await oldReweetsModel.find()
+// //     await oldTweetsModel.find()
 // //       .then(tweets => tweets.forEach(data => IDs.push(data._id)))
   
 // //     return IDs;
 // //   };
 
 // // const writeTweetToDb = IDs => {
-// //     IDs.forEach(ID =>  oldReweetsModel.findOne({_id: ID} ).then(data => saveTweetToNewSchema(data)))
+// //     IDs.forEach(ID =>  oldTweetsModel.findOne({_id: ID} ).then(data => saveTweetToNewSchema(data)))
 // // }
 
 // // //update data for all own tweets in db

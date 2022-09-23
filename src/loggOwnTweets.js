@@ -9,7 +9,7 @@ const { ownTweetsSchema } = require('./schemas/ownTweetsSchema');
 const { currentDateAndTime } = require('./helpers')
 
 //create mongoose model
-const ownTweetsModel = mongoose.model('loggedOwnTweets', ownTweetsSchema);
+const ownTweetsModel = mongoose.model('ownTweets', ownTweetsSchema);
 
 const loggOwnTweets = (tweet, category) => {
     const newOwnTweet = new ownTweetsModel({
@@ -19,11 +19,13 @@ const loggOwnTweets = (tweet, category) => {
             id: tweet.id,
             id_str: tweet.id_str,
             text: tweet.text,
-            retweet_count: tweet.retweet_count,
-            favorite_count: tweet.favorite_count,
-            favorited: tweet.favorited,
-            retweeted: tweet.retweeted,
+            source: tweet.source,
             truncated: tweet.truncated,
+            in_reply_to_status_id: tweet.in_reply_to_status_id,
+            in_reply_to_status_id_str: tweet.in_reply_to_status_id_str,
+            in_reply_to_user_id: tweet.in_reply_to_user_id,
+            in_reply_to_user_id_str: tweet.in_reply_to_user_id_str,
+            in_reply_to_screen_name: tweet.in_reply_to_screen_name,
             user: {
                 id: tweet.user.id,
                 id_str: tweet.user.id_str,
@@ -38,6 +40,25 @@ const loggOwnTweets = (tweet, category) => {
                 created_at: tweet.user.created_at,
                 verified: tweet.user.verified,
             },
+            coordinates: tweet.coordinates,
+            place: tweet.place,
+            quoted_status_id: tweet.quoted_status_id,
+            quoted_status_id_str: tweet.quoted_status_id_str,
+            is_quote_status: tweet.is_quote_status,
+            quoted_status: tweet.quoted_status,
+            retweeted_status: tweet.retweeted_status,
+            quote_count: tweet.quote_count,
+            reply_count: tweet.reply_count,
+            retweet_count: tweet.retweet_count,
+            favorite_count: tweet.favorite_count,
+            entities: tweet.entities,
+            extended_entities: tweet.extended_entities,
+            favorited: tweet.favorited,
+            retweeted: tweet.retweeted,
+            possibly_sensitive: tweet.possibly_sensitive,
+            filter_level: tweet.filter_level,
+            lang: tweet.lang,
+            matching_rules: tweet.matching_rules,
         },
     });
    

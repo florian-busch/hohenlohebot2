@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGOCONNECTION);
 const { ownTweetsSchema } = require('./schemas/ownTweetsSchema');
 
 //Model setup
-const ownTweetsModel = mongoose.model('loggedOwnTweets', ownTweetsSchema);
+const ownTweetsModel = mongoose.model('ownTweets', ownTweetsSchema);
 
 //update tweet likes and retweets in db
 const updateOneTweetInDB = tweetData => {
