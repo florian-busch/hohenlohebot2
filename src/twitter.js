@@ -87,6 +87,7 @@ const sendTweet = async category => {
           loggErrors( {category: 'TweetPost', message: err, tweet: tweet } )
         } else {
           //mark tweet as posted in db and logg tweet to db
+          console.log(data)
           markAsPosted(content);
           loggOwnTweets(data, category);
         }
