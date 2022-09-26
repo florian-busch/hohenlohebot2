@@ -8,7 +8,7 @@ const { loggErrors } = require('./loggErrors');
 const { currentDateAndTime } = require('./helpers')
 
 //create mongoose model
-const retweetModel = mongoose.model('testRetweets', retweetSchema);
+const retweetModel = mongoose.model('Retweets', retweetSchema);
 
 const loggRetweets = tweet => {
     console.log(tweet)
