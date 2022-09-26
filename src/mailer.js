@@ -11,6 +11,7 @@ mongoose.connect(process.env.MONGOCONNECTION);
 const { retweetSchema } = require('./schemas/retweetsSchema');
 const { ownTweetsSchema } = require('./schemas/ownTweetsSchema');
 const { errorSchema } = require('./schemas/errorSchema');
+const { currentDateAndTime } = require('./helpers.js');
 
 //set up mongoose models
 const ownTweetsModel = mongoose.model('ownTweets', ownTweetsSchema);
@@ -105,8 +106,8 @@ const sendNotificationMail = async () => {
     .send({to: process.env.SENDGRID_RECIPIENT,
       from: process.env.SENDGRID_SENDER,
       subject: 'Hohenlohe Bot restarted',
-      text: `Hohenlohe Bot was restarted at ${new Date()}`,
-      html: `Hohenlohe Bot was restarted at ${new Date()}`
+      text: `Hohenlohe Bot was restarted at ${currentDateAndTime()}`,
+      html: `Hohenlohe Bot was restarted at ${currentDateAndTime()}`
     })
     .then(() => {
       console.log('Notification Mail sent')
