@@ -48,7 +48,7 @@ const getMuswiesenContent = () => {
   const remainingDaysWithDecimal = diffInUnixTime / oneDay;
   const decimalRemainingHours = remainingDaysWithDecimal - diffInFullDays;
   const remainingHours = Math.floor(decimalRemainingHours * 24);
-  return {text: `Ezz sanns bloaß noch ${diffInFullDays} Dooch und ${remainingHours} Schdund bis zur Muswies!`};
+  return {text: `Ezz sanns bloaß noch ${diffInFullDays} Dooch bis zur Muswies!`};
 };
 
 module.exports = { getMuswiesenContent, checkIfTodayMuswiese };
